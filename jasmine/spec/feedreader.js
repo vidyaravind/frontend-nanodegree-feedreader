@@ -37,7 +37,7 @@
             allFeeds.forEach(function (result) {
                 //expect url is defined and not equal to null
                 expect(result.url).toBeDefined();
-                expect(result.url).not.toBe(null);
+                expect(result.url).not.toBe("");
             });
         });
 
@@ -51,7 +51,7 @@
             allFeeds.forEach(function (result) {
                 //expect url is defined and not equal to null
                 expect(result.name).toBeDefined();
-                expect(result.name).not.toBe(null);
+                expect(result.name).not.toBe("");
             });
         });
      });
@@ -67,23 +67,9 @@
         * hiding/showing of the menu element.
         */
         it('Should not show menu and must be hidden on load', function () {
-            var result = document.getElementsByTagName("body")[0].className;
-            expect(result).toContain('menu-hidden');
+            expect($('body').hasClass('menu-hidden')).toBeTruthy();
         });
 
-        /* A test that ensures the menu changes
-         * visibility when the menu icon is clicked. This test
-         * should have two expectations: does the menu display when
-         * clicked and does it hide when clicked again.
-         */
-         it('Should display menu when clicked and hide when clicked again', function () {
-            $('.menu-icon-link').click();
-            var result = document.getElementsByTagName("body")[0].className;
-            expect(result).not.toContain('menu-hidden');
-            $('.menu-icon-link').click();
-            var result = document.getElementsByTagName("body")[0].className;
-            expect(result).toContain('menu-hidden');
-        });
         /* A test that ensures the menu changes after clicking on menu
          * visibility when the menu icon is clicked. This test
          * should have two expectations: does the menu display when
@@ -93,15 +79,11 @@
             //click on menu icon link
             $('.menu-icon-link').click();
             //set the result with class name
-            var result = document.getElementsByTagName("body")[0].className;
-            //expect if menu is not hidden
-            expect(result).not.toContain('menu-hidden');
+            expect($('body').hasClass('menu-hidden')).toBeFalsy();
             //click on the menu display
             $("a[data-id='1']").click();
             //set the result with class name
-            var result = document.getElementsByTagName("body")[0].className;
-            //expect menu is hidden
-            expect(result).toContain('menu-hidden');
+            expect($('body').hasClass('menu-hidden')).toBeTruthy();
         });
      });
 
@@ -122,12 +104,18 @@
                 done();
             });
         });
-        it('Should have atleast one feed  ',function(done){
+        it('Should have atleast one feed  ',function(){
             //validate result is greater than 0
             var result = $('.feed .entry-link');
             //expect result is greater than 0
             expect(result.length).not.toBe(0);
-            done();
+        });
+        it("Should have link starting with 'http(s)://'", function() {
+        var entries = document.querySelector(".feed").getElementsByClassName("entry-link");
+            for(var i = 0; i < entries.length; i++){
+            //expect href attribute to have http(s)
+            expect(entries[i].href).toMatch(/^(http|https):\/\//);
+            }
         });
     });
 
@@ -149,12 +137,15 @@
                 loadFeed(1, done);
             });
         });
-        it('Should load different feed',function(done){
+        it('Should load different feed',function(){
             //set the value to the variable
             secondContent = $('.feed').html();
             //expect first and second content are not same
-            expect(secondContent).not.toBe(firstContent);
-            done();
+            expect(secondContent).not.toEqual(firstContent);
         });
     });
+        /*A test that ensures when a new feed is loaded
+        * by the loadFeed function that the content actually changes.
+        * Remember, loadFeed() is asynchronous.
+        */
  }());
