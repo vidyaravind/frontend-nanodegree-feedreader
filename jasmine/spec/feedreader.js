@@ -73,16 +73,14 @@
         /* A test that ensures the menu changes after clicking on menu
          * visibility when the menu icon is clicked. This test
          * should have two expectations: does the menu display when
-         * clicked and does it hide when clicked on the list.
+         * clicked and does it hide when clicked again.
          */
-         it('Should display menu when clicked and hide when clicked on the list', function () {
+         it('Should display menu when clicked and hide when clicked again', function () {
             //click on menu icon link
             $('.menu-icon-link').click();
-            //set the result with class name
             expect($('body').hasClass('menu-hidden')).toBeFalsy();
-            //click on the menu display
-            $("a[data-id='1']").click();
-            //set the result with class name
+            //click on the menu icon link
+            $('.menu-icon-link').click();
             expect($('body').hasClass('menu-hidden')).toBeTruthy();
         });
      });
